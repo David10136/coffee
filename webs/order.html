@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Purchase Form</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                background-color: #f9f9f9;
+            }
+        
+            .form-container {
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 8px;
+                width: 350px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+        
+            .form-container h3 {
+                margin-bottom: 10px;
+                font-size: 1.2em;
+                color: #333;
+            }
+        
+            .form-container p {
+                margin-bottom: 20px;
+                font-size: 1em;
+                color: #555;
+            }
+        
+            .form-container label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+                color: #333;
+            }
+        
+            .form-container input[type="text"],
+            .form-container input[type="email"],
+            .form-container input[type="date"],
+            .form-container input[type="number"],
+            .form-container select {
+                width: calc(100% - 12px);
+                padding: 8px;
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+                font-size: 1em;
+            }
+        
+            .form-container button {
+                background-color: #007bff;
+                color: white;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                width: 100%;
+                font-size: 1em;
+            }
+        
+            .form-container button:hover {
+                background-color: #0056b3;
+            }
+        
+            .error-message {
+                color: red;
+                font-size: 0.9em;
+                margin-bottom: 10px;
+            }
+            
+            .success-message {
+                color: green;
+                font-size: 1em;
+                margin-top: 15px;
+                text-align: center;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="form-container">
+            <form id="purchaseForm">
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="fullName" required>
+                <div id="fullNameError" class="error-message"></div>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <div id="emailError" class="error-message"></div>
+
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" min="1" required>
+                <div id="quantityError" class="error-message"></div>
+
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required>
+                <div id="dobError" class="error-message"></div>
+
+                <label for="country">Country:</label>
+                <input type="text" id="country" name="country" placeholder="Country" required>
+                <div id="countryError" class="error-message"></div>
+
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" placeholder="Address" required>
+                <div id="addressError" class="error-message"></div>
+
+                <button type="submit">Order</button>
+                <div id="successMessage" class="success-message"></div>
+            </form>
+        </div>
+
+        <script>
+            document.getElementById('purchaseForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent form submission
+                
+                // Reset previous error messages
+                clearErrorMessages();
+                
+                // Validate form fields
+                const isValid = validateForm();
+                
+                if (isValid) {
+                    // Form is valid, show success message
+                    showSuccessMessage();
+                    // Here you could also submit the form data to a server
+                    // this.submit();
+                }
+            });
+            
+            function validateForm() {
+                let isValid = true;
+                
+                // Validate Full Name
+                const fullName = document.getElementById('fullName').value.trim();
+                if (fullName === '') {
+                    document.getElementById('fullNameError').textContent = 'Full name is required';
+                    isValid = false;
+                }
+                
+                // Validate Email
+                const email = document.getElementById('email').value.trim();
+                if (email === '') {
+                    document.getElementById('emailError').textContent = 'Email is required';
+                    isValid = false;
+                } else if (!isValidEmail(email)) {
+                    document.getElementById('emailError').textContent = 'Please enter a valid email';
+                    isValid = false;
+                }
+                
+                // Validate Quantity
+                const quantity = document.getElementById('quantity').value;
+                if (quantity === '' || isNaN(quantity) || quantity < 1) {
+                    document.getElementById('quantityError').textContent = 'Please enter a valid quantity (minimum 1)';
+                    isValid = false;
+                }
+                
+                // Validate Date of Birth
+                const dob = document.getElementById('dob').value;
+                if (dob === '') {
+                    document.getElementById('dobError').textContent = 'Date of birth is required';
+                    isValid = false;
+                }
+                
+                // Validate Country
+                const country = document.getElementById('country').value.trim();
+                if (country === '') {
+                    document.getElementById('countryError').textContent = 'Country is required';
+                    isValid = false;
+                }
+                
+                // Validate Address
+                const address = document.getElementById('address').value.trim();
+                if (address === '') {
+                    document.getElementById('addressError').textContent = 'Address is required';
+                    isValid = false;
+                }
+                
+                return isValid;
+            }
+            
+            function isValidEmail(email) {
+                // Simple email validation regex
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+            
+            function clearErrorMessages() {
+                const errorElements = document.querySelectorAll('.error-message');
+                errorElements.forEach(element => {
+                    element.textContent = '';
+                });
+            }
+            
+            function showSuccessMessage() {
+                const successElement = document.getElementById('successMessage');
+                successElement.textContent = 'Order submitted successfully!';
+                
+                // Clear the form
+                document.getElementById('purchaseForm').reset();
+                
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    successElement.textContent = '';
+                }, 3000);
+            }
+        </script>
+    </body>
+</html>
