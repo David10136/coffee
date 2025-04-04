@@ -12,15 +12,22 @@ Features of the design include
 
 Timeline
  Planning & Design: 2 weeks
+ 
  Development: 6 weeks
+ 
  Testing & Launch: 3 weeks
 
 Budget
   Design: Ghs 500
+ 
   Frontend: Ghs 600
+  
   Backend: Ghs 600
+  
   Payments: Ghs 400 
+  
   SEO/Marketing: Ghs 500
+  
   Total: Ghs 2600
 
 Contact: ddazzle66@gmail.com| 0553119640 
